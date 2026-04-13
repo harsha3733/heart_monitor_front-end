@@ -122,7 +122,7 @@ export default function Dashboard() {
     }).catch(() => {});
   }, []);
 
-  // Poll sensor data every 2.5 s
+  // Poll sensor data every 1.5 s
   useEffect(() => {
     const poll = async () => {
       try {
@@ -131,7 +131,7 @@ export default function Dashboard() {
       } catch { setIsLive(false); }
     };
     poll();
-    pollRef.current = setInterval(poll, 2500);
+    pollRef.current = setInterval(poll, 1500);
     return () => clearInterval(pollRef.current);
   }, []);
 
@@ -152,11 +152,11 @@ export default function Dashboard() {
   const sendReading = async () => {
     try {
       await API.post("/sensor/", {
-        heart_rate:  60  + Math.random() * 60,
-        hrv:         30  + Math.random() * 50,
+        heart_rate:  100  + Math.random() * 60,
+        hrv:         70  + Math.random() * 50,
         spo2:        94  + Math.random() * 6,
-        temperature: 36  + Math.random() * 1.8,
-        steps:       Math.floor(Math.random() * 10000),
+        temperature: 45  + Math.random() * 1.8,
+        steps:       Math.floor(Math.random() * 1000),
         timestamp:   new Date().toISOString()
       });
     } catch (e) { showAlert(e.response?.data?.detail || "Simulation failed", "error"); }
@@ -168,7 +168,7 @@ export default function Dashboard() {
       setSimulating(false);
     } else {
       sendReading();
-      simRef.current = setInterval(sendReading, 2000);
+      simRef.current = setInterval(sendReading, 1500);
       setSimulating(true);
     }
   };
@@ -339,7 +339,7 @@ export default function Dashboard() {
           <div>
             <p style={{ margin:0, fontWeight:600, fontSize:14, color:"#e2e8f0" }}>🤖 Risk Analysis</p>
             <p style={{ margin:"4px 0 0", fontSize:12, color:"#475569" }}>
-              XGBoost + Neural Net ensemble · uses health profile + last 10 readings
+              XGBoost + Neural Net ensemble · uses health profile + last 30 readings
             </p>
           </div>
 
