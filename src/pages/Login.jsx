@@ -32,6 +32,7 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", form);
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("userInfo", JSON.stringify(res.data.user));
       showAlert("Welcome back!", "success");
       navigate("/dashboard");
     } catch (err) {
