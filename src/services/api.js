@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000"
+  baseURL: import.meta.env.VITE_API_URL
 });
 
-// Attach JWT token to every request
+// Attach JWT token
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -13,7 +13,7 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-// Auto-logout on 401 (expired / invalid token)
+// Handle 401
 API.interceptors.response.use(
   (res) => res,
   (err) => {
